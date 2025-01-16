@@ -1,0 +1,59 @@
+1.	Установите пакет 
+samba samba apt-get install samba
+2.	Что такое общая папка, зачем оно может быть нужно?
+Общая папка — это каталог на компьютере или сервере, который доступен для нескольких пользователей или устройств. Она позволяет пользователям 
+совместно использовать файлы и папки, что упрощает обмен данными и сотрудничество.
+3.	Создайте общую папку без пароля с правами только на чтение файлов
+mkdir -p /srv/samba/read_only (место где создается папка)
+chmod 755 /srv/samba/read_only (установливаем права доступа только на чтение для всех пользователей)
+sudo nano /etc/samba/smb.conf
+[read_only]
+path = /srv/samba/read_only 
+browseable = yes
+read only = yes
+guest ok = yes
+systemctl restart smb (перезагружаем)
+4.	Создайте общую папку с паролем с правами на чтение и запись
+mkdir -p /srv/samba/read_write
+chmod 770 /srv/samba/read_write
+sudo nano /etc/samba/smb.conf
+[read_write] 
+path = /srv/samba/read_write 
+browseable = yes 
+read only = no 
+valid users = @samba_users
+systemctl restart smb
+5.	Создайте общую папку с доступом для какой-то группы с полными правами
+mkdir -p /srv/samba/shared_folder
+chmod 2770 /srv/samba/ shared_folder
+groupadd samba_group (создаем группу)
+usermod -aG samba_group username (добавляем пользователей)
+sudo nano /etc/samba/smb.conf
+[shared_folder] 
+path = /srv/samba/shared_folder 
+browseable = yes 
+read only = no 
+valid users = @samba_group
+smbpasswd -a username (устанавливаем пароль для каждого пользователя)
+systemctl restart smb
+6.	Создайте общую папку в которой у одной группы будет полный доступ, а у другой только доступ на чтение. Третья группа не должна иметь к ней доступа
+mkdir -p /srv/samba/complex_shared_folder
+chmod 2770 /srv/samba/complex_shared_folder
+groupadd full_access_group 
+groupadd read_only_group
+groupadd no_access_group
+usermod -aG full_access_group username1 
+usermod -aG read_only_group username2
+usermod -aG no_access_group username3
+sudo nano /etc/samba/smb.conf
+[complex_shared_folder] 
+path = /srv/samba/complex_shared_folder 
+browseable = yes 
+read only = no 
+valid users = @full_access_group 
+write list = @full_access_group 
+read list = @read_only_group
+smbpasswd -a username1
+ smbpasswd -a username2
+smbpasswd -a username3
+systemctl restart smb
