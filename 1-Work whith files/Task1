@@ -1,0 +1,12 @@
+Task1
+Переместиться между директориями: cd
+Вывести список файлов в директории : ls
+Вывести список Всех файлов в директории: ls-a
+Создать папку с подпапками: mkdir -p task11/qwe/asd/zxc
+Внутри папки создать файлик и записать в него что-нибудь: echo “что-то записали” > task11/qwe.txt 
+Переместить файл из одной директории в другую: mv home/admin/ task11/qwe.txt /home/admin/
+Скопировать файл из одной директории в другую: cp task11/qwe.txt /home/admin/
+Переименовать файл: mv task11/qwe.txt task11/qwe_new.txt
+Сравнить содержимое файла: diff task11/qwe.txt /home/user/Documents/text.txt
+Отсортировать содержимоей файла по возрастанию и убыванию: sort task11/qwe.txt  > task11/sorted.txt (sort -r task11/qwe.txt  > task11/sorted.txt - поубыванию)
+Удалить все папки и файлы: rm -rf task11
