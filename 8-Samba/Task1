@@ -25,7 +25,7 @@ valid users = @samba_users
 systemctl restart smb
 5.	Создайте общую папку с доступом для какой-то группы с полными правами
 mkdir -p /srv/samba/shared_folder
-chmod 2770 /srv/samba/ shared_folder
+chmod 770 /srv/samba/ shared_folder
 groupadd samba_group (создаем группу)
 usermod -aG samba_group username (добавляем пользователей)
 sudo nano /etc/samba/smb.conf
@@ -38,7 +38,7 @@ smbpasswd -a username (устанавливаем пароль для каждо
 systemctl restart smb
 6.	Создайте общую папку в которой у одной группы будет полный доступ, а у другой только доступ на чтение. Третья группа не должна иметь к ней доступа
 mkdir -p /srv/samba/complex_shared_folder
-chmod 2770 /srv/samba/complex_shared_folder
+chmod 770 /srv/samba/complex_shared_folder
 groupadd full_access_group 
 groupadd read_only_group
 groupadd no_access_group
